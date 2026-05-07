@@ -2,7 +2,7 @@ import { it, expect } from 'vitest';
 import { RuleRegistry, analyzeProject } from '../rules/core/engine';
 import { builtinRules } from '../rules/builtin/basic';
 import { createEmptyProject } from '../domain/score/score';
-import { generateFourVoiceFromFixedInput } from '../generator/core';
+import { generateFourVoiceHarmony } from '../generator/search/generateFourVoiceHarmony';
 it('deterministic diagnostics',()=>{
   const reg = new RuleRegistry(builtinRules);
   const d1 = analyzeProject(createEmptyProject(), reg);
@@ -10,6 +10,8 @@ it('deterministic diagnostics',()=>{
   expect(d1).toEqual(d2);
 });
 it('deterministic generator ranking',()=>{
-  const r = { fixedVoices: { soprano:['C5'], alto:['G4'], tenor:['E4'], bass:['C3'] } };
-  expect(generateFourVoiceFromFixedInput(r)).toEqual(generateFourVoiceFromFixedInput(r));
+  const req = { project:createEmptyProject(), measure:0, onsetKey:'0/1', fixedEvents:{}, targetVoices:['soprano','alto','tenor','bass'] as const, ruleProfile:'default', maxCandidates:3, maxNodes:100, timeoutMs:1000, seed:1, explanationLevel:'beginner' as const };
+  const a=generateFourVoiceHarmony(req); const b=generateFourVoiceHarmony(req);
+  expect(a.candidates).toEqual(b.candidates);
+  expect(a.status).toEqual(b.status);
 });
