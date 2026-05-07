@@ -5,8 +5,8 @@ import { createEmptyProject } from '../domain/score/score';
 import { generateFourVoiceFromFixedInput } from '../generator/core';
 it('deterministic diagnostics',()=>{
   const reg = new RuleRegistry(builtinRules);
-  const d1 = analyzeProject({project:createEmptyProject()}, reg);
-  const d2 = analyzeProject({project:createEmptyProject()}, reg);
+  const d1 = analyzeProject(createEmptyProject(), reg);
+  const d2 = analyzeProject(createEmptyProject(), reg);
   expect(d1).toEqual(d2);
 });
 it('deterministic generator ranking',()=>{
